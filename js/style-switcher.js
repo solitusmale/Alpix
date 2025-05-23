@@ -25,16 +25,23 @@ function setActiveStyle(color) {
 }
 // theme light and dark mode
 const dayNight = document.querySelector(".day-night");
+const moonIcon = dayNight.querySelector(".fa-moon");
+const sunIcon = dayNight.querySelector(".fa-sun");
+
+function updateIcons() {
+  const isDark = document.body.classList.contains("dark");
+  moonIcon.style.display = isDark ? "none" : "inline-block";
+  sunIcon.style.display = isDark ? "inline-block" : "none";
+}
+
+// Toggle mode and update icons
 dayNight.addEventListener("click", () => {
-    dayNight.querySelector("i").classList.toggle("fa-sun");
-    dayNight.querySelector("i").classList.toggle("fa-moon");
-    document.body.classList.toggle("dark");
-})
+  document.body.classList.toggle("dark");
+  updateIcons();
+});
+
+// On page load, update icons based on current mode
 window.addEventListener("load", () => {
-    if(document.body.classList.contains("dark")) {
-        dayNight.querySelector("i").classList.add("fa-sun");
-    }
-    else {
-        dayNight.querySelector("i").classList.add("fa-moon");
-    }
-})
+  updateIcons();
+});
+
