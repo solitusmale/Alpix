@@ -1,54 +1,65 @@
 const styleSwitcherToggle = document.querySelector(".style-switcher-toggler");
 styleSwitcherToggle.addEventListener("click", () => {
     document.querySelector(".style-switcher").classList.toggle("open");
-})
-// hide style - switcher on scroll
+});
+
+// Hide on scroll
 window.addEventListener("scroll", () => {
-    if(document.querySelector(".style-switcher").classList.contains("open"))
-    {
+    if (document.querySelector(".style-switcher").classList.contains("open")) {
         document.querySelector(".style-switcher").classList.remove("open");
-    }    
-    })
+    }
+});
 
-// Theme colors
-
+// Alternate styles logic
 const alternativeStyles = document.querySelectorAll(".alternate-style");
+let lastActiveStyle = "color-1"; // default
+let rgbMode = false;
+let rgbAnimationId = null;
+
+const rgbToggle = document.querySelector(".rgb-toggle");
+
 function setActiveStyle(color) {
+    if (rgbMode) {
+        stopRgbSkinColor(); // this will stop animation but leave the color
+        rgbMode = false;
+        rgbToggle.classList.remove("active");
+
+        // ✅ remove the custom RGB color so alternate-style takes effect
+        document.documentElement.style.removeProperty('--skin-color');
+    }
+
+    lastActiveStyle = color;
+
     alternativeStyles.forEach((style) => {
-        if(color === style.getAttribute("title")){
+        if (color === style.getAttribute("title")) {
             style.removeAttribute("disabled");
-        }
-        else{
+        } else {
             style.setAttribute("disabled", "true");
         }
-    })
+    });
 }
-// theme light and dark mode
+
+// Day/Night mode
 const dayNight = document.querySelector(".day-night");
 const moonIcon = dayNight.querySelector(".fa-moon");
 const sunIcon = dayNight.querySelector(".fa-sun");
 
 function updateIcons() {
-  const isDark = document.body.classList.contains("dark");
-  moonIcon.style.display = isDark ? "none" : "inline-block";
-  sunIcon.style.display = isDark ? "inline-block" : "none";
+    const isDark = document.body.classList.contains("dark");
+    moonIcon.style.display = isDark ? "none" : "inline-block";
+    sunIcon.style.display = isDark ? "inline-block" : "none";
 }
 
-// Toggle mode and update icons
 dayNight.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  updateIcons();
+    document.body.classList.toggle("dark");
+    updateIcons();
 });
 
-// On page load, update icons based on current mode
 window.addEventListener("load", () => {
-  updateIcons();
+    updateIcons();
 });
 
-const rgbToggle = document.querySelector(".rgb-toggle");
-let rgbMode = false;
-let rgbAnimationId = null;
-
+// RGB animation logic
 function startRgbSkinColor() {
     let hue = 0;
     function animateSkinColor() {
@@ -65,23 +76,18 @@ function stopRgbSkinColor() {
         cancelAnimationFrame(rgbAnimationId);
         rgbAnimationId = null;
     }
-
-    // Optionally reset to a default or previously chosen skin color
-    // For example, default to 'color-1':
-    setActiveStyle("color-1");
 }
 
 rgbToggle.addEventListener("click", () => {
     rgbMode = !rgbMode;
     if (rgbMode) {
         startRgbSkinColor();
+        rgbToggle.classList.add("active");
     } else {
         stopRgbSkinColor();
+        rgbToggle.classList.remove("active");
     }
-    rgbToggle.classList.toggle("active", rgbMode);
 });
 
-
+// Make setActiveStyle accessible globally
 window.setActiveStyle = setActiveStyle;
-
-
