@@ -44,6 +44,44 @@ dayNight.addEventListener("click", () => {
 window.addEventListener("load", () => {
   updateIcons();
 });
+
+const rgbToggle = document.querySelector(".rgb-toggle");
+let rgbMode = false;
+let rgbAnimationId = null;
+
+function startRgbSkinColor() {
+    let hue = 0;
+    function animateSkinColor() {
+        hue = (hue + 1) % 360;
+        const newColor = `hsl(${hue}, 100%, 50%)`;
+        document.documentElement.style.setProperty('--skin-color', newColor);
+        rgbAnimationId = requestAnimationFrame(animateSkinColor);
+    }
+    animateSkinColor();
+}
+
+function stopRgbSkinColor() {
+    if (rgbAnimationId) {
+        cancelAnimationFrame(rgbAnimationId);
+        rgbAnimationId = null;
+    }
+
+    // Optionally reset to a default or previously chosen skin color
+    // For example, default to 'color-1':
+    setActiveStyle("color-1");
+}
+
+rgbToggle.addEventListener("click", () => {
+    rgbMode = !rgbMode;
+    if (rgbMode) {
+        startRgbSkinColor();
+    } else {
+        stopRgbSkinColor();
+    }
+    rgbToggle.classList.toggle("active", rgbMode);
+});
+
+
 window.setActiveStyle = setActiveStyle;
 
 

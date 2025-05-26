@@ -39,6 +39,20 @@
 .style-switcher .day-night {
     top: 55px;
 }
+.style-switcher .rgb-toggle {
+    margin-top: 100px;
+    top: 10px;
+}
+.style-switcher .rgb-toggle.active {
+  animation: pulse 1s infinite alternate;
+  color: var(--skin-color);
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
 .style-switcher h4 {
     margin: 0 0 10px;
     color: var(--text-black-700);
