@@ -44,4 +44,6 @@ dayNight.addEventListener("click", () => {
 window.addEventListener("load", () => {
   updateIcons();
 });
+window.setActiveStyle = setActiveStyle;
+
 
