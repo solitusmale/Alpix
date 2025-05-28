@@ -89,5 +89,6 @@ rgbToggle.addEventListener("click", () => {
     }
 });
 
+
 // Make setActiveStyle accessible globally
 window.setActiveStyle = setActiveStyle;
